@@ -25,8 +25,6 @@ class MoneyBottomNavigation extends StatelessWidget {
                 icon: Icon(Icons.category), label: 'Category'),
           ],
         );
-                   // print('$newIndex');
-            print('$updatedIndex');
       },
     );
   }

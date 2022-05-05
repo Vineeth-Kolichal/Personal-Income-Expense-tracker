@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       bottomNavigationBar: MoneyBottomNavigation(),
       body: SafeArea(
         child: ValueListenableBuilder(
@@ -22,6 +23,17 @@ class HomeScreen extends StatelessWidget {
             return _pages[updatedIndex];
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+       if(selectIndexNotifier.value==0)
+       {
+         print('transactions page');
+       }
+       else if(selectIndexNotifier.value==1)
+       {
+         print('category page');
+       }
+      },child: Icon(Icons.add),
       ),
     );
   }
