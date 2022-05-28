@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:money_management_app/Screens/Category/expence_category_list.dart';
 import 'package:money_management_app/Screens/Category/income_category_list.dart';
+import 'package:money_management_app/db/category/category_db.dart';
 
 class ScreenCategory extends StatefulWidget {
   const ScreenCategory({Key? key}) : super(key: key);
@@ -15,6 +16,10 @@ class _ScreenCategoryState extends State<ScreenCategory>
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
+    categoryDB().listCategory().then((value) {
+      print('getegory get');
+      print(value.toString());
+    });
     super.initState();
   }
 

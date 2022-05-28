@@ -12,13 +12,13 @@ class IncomeCategoryList extends StatelessWidget {
             title: Text('Income Category $index'),
             trailing: IconButton(
               onPressed: () {},
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
             ),
           ),
         ) ;
       },
       separatorBuilder: (context,index){
-        return SizedBox(height: 10,);
+        return const SizedBox(height: 10,);
 
       },
       itemCount: 10,
