@@ -16,6 +16,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Center(
+          child: Text('Income&Expence Tracker'),
+        ),
+      ),
       backgroundColor: Colors.grey[100],
       bottomNavigationBar: MoneyBottomNavigation(),
       body: SafeArea(
@@ -30,7 +35,7 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           if (selectIndexNotifier.value == 0) {
             print('transactions page');
-          } else  {
+          } else {
             print('category page');
             ShowCategoryAddPopup(context);
             // final _sample = CategoryModel(
