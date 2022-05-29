@@ -3,6 +3,7 @@ import 'package:money_management_app/Screens/Add_Transactions/screen_add_transac
 import 'package:money_management_app/Screens/Category/screen_Category.dart';
 import 'package:money_management_app/Screens/Home/widgets/bottomNavigation.dart';
 import 'package:money_management_app/Screens/Transactions/screen_Transactions.dart';
+import 'package:money_management_app/Screens/main_home/screen_main_home.dart';
 import 'package:money_management_app/models/category/category_add_popup.dart';
 import 'package:money_management_app/models/category/category_model.dart';
 import 'package:money_management_app/db/category/category_db.dart';
@@ -10,6 +11,7 @@ import 'package:money_management_app/db/category/category_db.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final _pages = [
+    ScreenMainHome(),
     ScreenTransactions(),
     ScreenCategory(),
   ];
@@ -35,7 +37,7 @@ class HomeScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          if (selectIndexNotifier.value == 0) {
+          if (selectIndexNotifier.value == 0 || selectIndexNotifier.value ==1) {
             print('transactions page');
             Navigator.of(context).pushNamed(ScreenAddTrasaction.routName);
           } else {

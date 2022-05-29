@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:money_management_app/db/category/category_db.dart';
+import 'package:money_management_app/db/transactions/transaction_db.dart';
 import 'package:money_management_app/models/category/category_model.dart';
+import 'package:money_management_app/models/transaction/transaction_model.dart';
 
 class ScreenAddTrasaction extends StatefulWidget {
   static const routName = 'add_transaction';
@@ -15,8 +17,10 @@ class ScreenAddTrasaction extends StatefulWidget {
 class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
   DateTime? _selectedDate;
   CategoryType? _selectedCategory;
-  CategoryModel? selectedCategoryModel;
+  CategoryModel? _selectedCategoryModel;
   String? _categoryID;
+  final _purposeTextEditingController = TextEditingController();
+  final _amountTextEditingController = TextEditingController();
 
   @override
   void initState() {
@@ -38,6 +42,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
+                controller: _purposeTextEditingController,
                 decoration: InputDecoration(
                   labelText: 'Purpose',
                   enabledBorder: OutlineInputBorder(
@@ -51,6 +56,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                 height: 20,
               ),
               TextFormField(
+                controller: _amountTextEditingController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Amount',
@@ -103,7 +109,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                     onChanged: (newValue) {
                       setState(() {
                         _selectedCategory = CategoryType.income;
-                        _categoryID=null;
+                        _categoryID = null;
                       });
                     },
                   ),
@@ -114,7 +120,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                     onChanged: (newValue) {
                       setState(() {
                         _selectedCategory = CategoryType.expense;
-                        _categoryID=null;
+                        _categoryID = null;
                       });
                     },
                   ),
@@ -136,13 +142,16 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                       return DropdownMenuItem(
                         value: e.id,
                         child: Text(e.name),
+                        onTap: () {
+                          _selectedCategoryModel = e;
+                        },
                       );
                     },
                   ).toList(),
                   onChanged: (selectedValue) {
-                   setState(() {
-                      _categoryID=selectedValue.toString();
-                   });
+                    setState(() {
+                      _categoryID = selectedValue.toString();
+                    });
                     print(selectedValue);
                   },
                 ),
@@ -151,7 +160,11 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                 padding: const EdgeInsets.only(left: 17),
                 alignment: Alignment.bottomLeft,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    addTransaction();
+                    Navigator.of(context).pop();
+                    TransactionDB.instance.refresh();
+                  },
                   child: const Text('Submit'),
                 ),
               ),
@@ -160,5 +173,37 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
         ),
       ),
     );
+  }
+
+  Future<void> addTransaction() async {
+    final _purposeText = _purposeTextEditingController.text;
+    final _amountText = _amountTextEditingController.text;
+    if (_purposeText.isEmpty) {
+      return;
+    }
+    if (_amountText.isEmpty) {
+      return;
+    }
+    if (_categoryID == null) {
+      return;
+    }
+    if (_selectedDate == null) {
+      return;
+    }
+    if (_selectedCategoryModel == null) {
+      return;
+    }
+    final _parseAmount = double.tryParse(_amountText);
+    if (_parseAmount == null) {
+      return;
+    }
+    final _model=TransactionModel(
+      purpose: _purposeText,
+      amount: _parseAmount,
+      date: _selectedDate!,
+      type: _selectedCategory!,
+      category: _selectedCategoryModel!,
+    );
+    await TransactionDB.instance.addTransaction(_model);
   }
 }

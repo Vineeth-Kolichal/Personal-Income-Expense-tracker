@@ -18,6 +18,10 @@ class MoneyBottomNavigation extends StatelessWidget {
           },
           items: [
             BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
               icon: Icon(Icons.attach_money_rounded),
               label: 'Transactios',
             ),
