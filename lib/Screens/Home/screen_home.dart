@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:money_management_app/Screens/Add_Transactions/screen_add_transaction.dart';
 import 'package:money_management_app/Screens/Category/screen_Category.dart';
 import 'package:money_management_app/Screens/Home/widgets/bottomNavigation.dart';
 import 'package:money_management_app/Screens/Transactions/screen_Transactions.dart';
@@ -16,6 +17,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      //drawer: Drawer(child: Text('test')),
       appBar: AppBar(
         title: Center(
           child: Text('Income&Expence Tracker'),
@@ -35,15 +37,9 @@ class HomeScreen extends StatelessWidget {
         onPressed: () {
           if (selectIndexNotifier.value == 0) {
             print('transactions page');
+            Navigator.of(context).pushNamed(ScreenAddTrasaction.routName);
           } else {
-            print('category page');
             ShowCategoryAddPopup(context);
-            // final _sample = CategoryModel(
-            //   id: DateTime.now().microsecondsSinceEpoch.toString(),
-            //   name: 'travel',
-            //   type: CategoryType.expense,
-            // );
-            // categoryDB().insertCategory(_sample);
           }
         },
         child: Icon(Icons.add),

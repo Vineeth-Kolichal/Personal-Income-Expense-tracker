@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_management_app/Screens/Add_Transactions/screen_add_transaction.dart';
 import 'package:money_management_app/Screens/Home/screen_home.dart';
 import 'package:money_management_app/models/category/category_model.dart';
 
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: HomeScreen(),
+      routes: {
+        ScreenAddTrasaction.routName:(ctx) =>const ScreenAddTrasaction() 
+      },
     );
   }
 }
