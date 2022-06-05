@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:money_management_app/Screens/Transactions/screen_transactions.dart';
+import 'package:money_management_app/Screens/main_home/total_display.dart';
 import 'package:money_management_app/db/category/category_db.dart';
 import 'package:money_management_app/db/transactions/transaction_db.dart';
 
 class ScreenMainHome extends StatelessWidget {
-  const ScreenMainHome({Key? key}) : super(key: key);
+  //final double _sum =sum();
+  ScreenMainHome({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     CategoryDB.instance.refreshUI();
     TransactionDB.instance.refresh();
+    TransactionDB.instance.refreshHome();
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-       // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Card(
             child: Padding(
@@ -36,57 +40,27 @@ class ScreenMainHome extends StatelessWidget {
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Income:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green),
-                              ),
-                            ],
+                          //child: TotalIncome(),
+                          child: TotalDisplay(
+                            totalValue: TransactionDB.instance.allIncome,
+                            textColor: Colors.green,
+                            titie: 'Income',
                           ),
                         ),
                       ),
                       Container(
-                        margin:EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 10),
                         height: 60,
                         width: 3,
-                        decoration: BoxDecoration(color:Colors.grey[200]),
+                        decoration: BoxDecoration(color: Colors.grey[200]),
                       ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Expence:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 246, 22, 2)),
-                              ),
-                            ],
-                          ),
+                          child: TotalDisplay(
+                              totalValue: TransactionDB.instance.allExpense,
+                              textColor: Colors.red,
+                              titie: 'Expense'),
                         ),
                       ),
                     ],
@@ -96,7 +70,7 @@ class ScreenMainHome extends StatelessWidget {
             ),
           ),
           //SizedBox(width: 30,),
-           Card(
+          Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -115,57 +89,25 @@ class ScreenMainHome extends StatelessWidget {
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Income:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green),
-                              ),
-                            ],
-                          ),
+                          child: TotalDisplay(
+                              totalValue: TransactionDB.instance.monthIncome,
+                              textColor: Colors.green,
+                              titie: 'Income'),
                         ),
                       ),
                       Container(
-                        margin:EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 10),
                         height: 60,
                         width: 3,
-                        decoration: BoxDecoration(color:Colors.grey[200]),
+                        decoration: BoxDecoration(color: Colors.grey[200]),
                       ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Expence:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 246, 22, 2)),
-                              ),
-                            ],
-                          ),
+                          child: TotalDisplay(
+                              totalValue: TransactionDB.instance.monthExpense,
+                              textColor: Colors.red,
+                              titie: 'Expense'),
                         ),
                       ),
                     ],
@@ -175,7 +117,7 @@ class ScreenMainHome extends StatelessWidget {
             ),
           ),
           // SizedBox(width: 30,),
-           Card(
+          Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
@@ -194,57 +136,25 @@ class ScreenMainHome extends StatelessWidget {
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Income:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.green),
-                              ),
-                            ],
-                          ),
+                          child: TotalDisplay(
+                              totalValue: TransactionDB.instance.todayIncome,
+                              textColor: Colors.green,
+                              titie: 'Income'),
                         ),
                       ),
                       Container(
-                        margin:EdgeInsets.only(right: 10),
+                        margin: EdgeInsets.only(right: 10),
                         height: 60,
                         width: 3,
-                        decoration: BoxDecoration(color:Colors.grey[200]),
+                        decoration: BoxDecoration(color: Colors.grey[200]),
                       ),
                       Expanded(
                         child: Container(
                           padding: EdgeInsets.all(10),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Expence:',
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                '1000',
-                                style: TextStyle(
-                                    fontSize: 40,
-                                    fontWeight: FontWeight.bold,
-                                    color: Color.fromARGB(255, 246, 22, 2)),
-                              ),
-                            ],
-                          ),
+                          child: TotalDisplay(
+                              totalValue: TransactionDB.instance.todayExpense,
+                              textColor: Colors.red,
+                              titie: 'Expense'),
                         ),
                       ),
                     ],

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:intl/intl.dart';
 import 'package:money_management_app/db/category/category_db.dart';
 import 'package:money_management_app/db/transactions/transaction_db.dart';
 import 'package:money_management_app/models/category/category_model.dart';
@@ -76,7 +77,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime.now().subtract(
-                        Duration(days: 30),
+                        Duration(days: 60),
                       ),
                       lastDate: DateTime.now(),
                     );
@@ -93,7 +94,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                   label: Text(
                     _selectedDate == null
                         ? 'Select Date'
-                        : _selectedDate.toString(),
+                        : DateFormat.yMMMd().format(_selectedDate!),
                     style: TextStyle(
                       fontSize: 12,
                       color: Colors.black,
@@ -162,8 +163,9 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                 child: ElevatedButton(
                   onPressed: () {
                     addTransaction();
-                    Navigator.of(context).pop();
                     TransactionDB.instance.refresh();
+                    TransactionDB.instance.refreshHome();
+                    Navigator.of(context).pop();
                   },
                   child: const Text('Submit'),
                 ),

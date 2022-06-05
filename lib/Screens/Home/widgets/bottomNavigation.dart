@@ -22,7 +22,7 @@ class MoneyBottomNavigation extends StatelessWidget {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.attach_money_rounded),
+              icon: Icon(Icons.currency_rupee),
               label: 'Transactios',
             ),
             BottomNavigationBarItem(

@@ -4,9 +4,10 @@ import 'package:intl/intl.dart';
 import 'package:money_management_app/db/transactions/transaction_db.dart';
 import 'package:money_management_app/models/category/category_model.dart';
 import 'package:money_management_app/models/transaction/transaction_model.dart';
-
+double total_amount=0;
 class ScreenTransactions extends StatelessWidget {
-  const ScreenTransactions({Key? key}) : super(key: key);
+  //double total_amount=0;
+  ScreenTransactions({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +36,7 @@ class ScreenTransactions extends StatelessWidget {
               child: Card(
                 elevation: 0,
                 child: ListTile(
+                  trailing: Text(_value.purpose),
                   leading: CircleAvatar(
                     backgroundColor: _value.type == CategoryType.income
                         ? Colors.green
