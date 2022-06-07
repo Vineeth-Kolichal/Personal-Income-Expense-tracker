@@ -69,7 +69,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(left: 7),
+                padding: const EdgeInsets.only(left: 7,top: 10),
                 alignment: Alignment.bottomLeft,
                 child: TextButton.icon(
                   onPressed: () async {
@@ -77,7 +77,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime.now().subtract(
-                        Duration(days: 60),
+                        Duration(days: 30),
                       ),
                       lastDate: DateTime.now(),
                     );
@@ -87,10 +87,9 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                       setState(() {
                         _selectedDate = _selectDate;
                       });
-                      print(_selectDate.toString());
                     }
                   },
-                  icon: const Icon(Icons.calendar_today),
+                  icon: const Icon(Icons.calendar_month,),
                   label: Text(
                     _selectedDate == null
                         ? 'Select Date'
@@ -167,7 +166,7 @@ class _ScreenAddTrasactionState extends State<ScreenAddTrasaction> {
                     TransactionDB.instance.refreshHome();
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Submit'),
+                  child: const Text('Add'),
                 ),
               ),
             ],

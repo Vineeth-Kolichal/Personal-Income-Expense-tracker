@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:money_management_app/Screens/Transactions/screen_transactions.dart';
+import 'package:money_management_app/Screens/main_home/custom_section.dart';
 import 'package:money_management_app/Screens/main_home/total_display.dart';
 import 'package:money_management_app/db/category/category_db.dart';
 import 'package:money_management_app/db/transactions/transaction_db.dart';
@@ -15,7 +16,7 @@ class ScreenMainHome extends StatelessWidget {
     TransactionDB.instance.refreshHome();
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Column(
+      child: ListView(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Card(
@@ -36,6 +37,7 @@ class ScreenMainHome extends StatelessWidget {
                   // ),
                   Divider(),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Expanded(
                         child: Container(
@@ -163,6 +165,7 @@ class ScreenMainHome extends StatelessWidget {
               ),
             ),
           ),
+          CustomSection(),
         ],
       ),
     );

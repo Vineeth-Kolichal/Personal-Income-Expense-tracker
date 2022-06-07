@@ -19,6 +19,8 @@ class TransactionDB implements TransactionDbFunctions {
   String? lDay;
   String? lMonth;
   String? lYear;
+  DateTime? _startDate;
+  DateTime? _endDate;
   TransactionDB._internal();
   static TransactionDB instance = TransactionDB._internal();
 
@@ -31,6 +33,8 @@ class TransactionDB implements TransactionDbFunctions {
   List<TransactionModel> monthExpenseList = [];
   List<TransactionModel> todayIncomeList = [];
   List<TransactionModel> todayExpenseList = [];
+  List<TransactionModel> customExpenseList = [];
+  List<TransactionModel> customIncomeList = [];
 
   ValueNotifier<double> allExpense = ValueNotifier(0);
   ValueNotifier<double> allIncome = ValueNotifier(0);
@@ -38,7 +42,18 @@ class TransactionDB implements TransactionDbFunctions {
   ValueNotifier<double> monthExpense = ValueNotifier(0);
   ValueNotifier<double> todayIncome = ValueNotifier(0);
   ValueNotifier<double> todayExpense = ValueNotifier(0);
+  ValueNotifier<double> customExpense = ValueNotifier(0);
+  ValueNotifier<double> customIncome = ValueNotifier(0);
+
   ValueNotifier<List<TransactionModel>> transactionListNotifier =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> dayIncomeTransactionListNotifier =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> dayExpensetransactionListNotifier =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> monthIncomeTransactionListNotifier =
+      ValueNotifier([]);
+  ValueNotifier<List<TransactionModel>> monthExpenseTransactionListNotifier =
       ValueNotifier([]);
 
   @override
@@ -82,18 +97,23 @@ class TransactionDB implements TransactionDbFunctions {
     monthExpenseList.clear();
     todayIncomeList.clear();
     todayExpenseList.clear();
+    dayIncomeTransactionListNotifier.value.clear();
+    dayExpensetransactionListNotifier.value.clear();
+    monthExpenseTransactionListNotifier.value.clear();
+    monthIncomeTransactionListNotifier.value.clear();
     await Future.forEach(
       _allTransactions,
       (TransactionModel transaction) async {
-     
         if (transaction.type == CategoryType.income) {
           incomeList.add(transaction);
           parseCurrentDate();
           parseListDate(transaction.date);
           if (_cMonth == lMonth && _cYear == lYear) {
             monthIncomeList.add(transaction);
+            monthIncomeTransactionListNotifier.value.add(transaction);
             if (_cDay == lDay) {
               todayIncomeList.add(transaction);
+              dayIncomeTransactionListNotifier.value.add(transaction);
             }
           }
         } else {
@@ -102,8 +122,10 @@ class TransactionDB implements TransactionDbFunctions {
           parseListDate(transaction.date);
           if (_cMonth == lMonth && _cYear == lYear) {
             monthExpenseList.add(transaction);
+            monthExpenseTransactionListNotifier.value.add(transaction);
             if (_cDay == lDay) {
               todayExpenseList.add(transaction);
+              dayExpensetransactionListNotifier.value.add(transaction);
             }
           }
         }
@@ -115,6 +137,10 @@ class TransactionDB implements TransactionDbFunctions {
     monthIncomeRefresh();
     todayIncomeRefresh();
     todayExpenseRefresh();
+    dayExpensetransactionListNotifier.notifyListeners();
+    dayExpensetransactionListNotifier.notifyListeners();
+    monthExpenseTransactionListNotifier.notifyListeners();
+    monthIncomeTransactionListNotifier.notifyListeners();
   }
 
   Future<void> allIncomeRefresh() async {
@@ -185,5 +211,54 @@ class TransactionDB implements TransactionDbFunctions {
     lDay = _splitListDate[1];
     lMonth = _splitListDate[0];
     lYear = _splitListDate[2];
+  }
+
+  void customDate(DateTime start, DateTime end) {
+    _startDate = start;
+    _endDate = end;
+    refreshCustom();
+  }
+
+  Future<void> refreshCustom() async {
+    final _allTransactions = await getAllTransactions();
+    customExpenseList.clear();
+    customIncomeList.clear();
+    await Future.forEach(
+      _allTransactions,
+      (TransactionModel transaction) async {
+        if (transaction.type == CategoryType.income) {
+          if (transaction.date.isAfter(_startDate!) &&
+              transaction.date.isBefore(_endDate!)) {
+            customIncomeList.add(transaction);
+          }
+        } else {
+          if (transaction.date.isAfter(_startDate!) &&
+              transaction.date.isBefore(_endDate!)) {
+            customExpenseList.add(transaction);
+          }
+        }
+      },
+    );
+
+    customExpenseRefresh();
+    customIncomeRefresh();
+  }
+
+  void customIncomeRefresh() {
+    customIncome.value = 0;
+    for (var i = 0; i < customIncomeList.length; i++) {
+      final _value = customIncomeList[i];
+      customIncome.value = customIncome.value + _value.amount;
+    }
+    customIncome.notifyListeners();
+  }
+
+  void customExpenseRefresh() {
+    customExpense.value = 0;
+    for (var i = 0; i < customExpenseList.length; i++) {
+      final _value = customExpenseList[i];
+      customExpense.value = customExpense.value + _value.amount;
+    }
+    customExpense.notifyListeners();
   }
 }
